@@ -15,9 +15,9 @@ function parseYandexSMS($string, $guess = true, $encoding = 'UTF-8')
     $clauseDelimiter = '[\r\n]+';   // Разделитель строк.
 
     // TODO: проверить при других кодировках строки
-    $patterns['password'] = '/^Пароль[:]?\s*(\d+)$/iu';
-    $patterns['charged'] = '^Спишется[^\d\,\.]*\s+(\d+[.,]?\d{0,2})([^\d\.\,]+[^\d]*)?$';
-    $patterns['account'] = '/^Пароль[:]?\s*/iu';
+    $patterns['password'] = '/^Пароль[^\d\,\.]*\s+(\d+)$/iu';
+    $patterns['charged'] = '/^Спишется[^\d\,\.]*\s+(\d+[.,]?\d{0,2})([^\d\.\,]+[^\d]*)?$/iu';
+    $patterns['account'] = '/^.*\bсч[её]т\b.*\W+(\d+)$/iu';
 
     $parts = preg_split('/' . $clauseDelimiter . '/', $string);
     foreach ($parts as $prt)
