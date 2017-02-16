@@ -13,7 +13,7 @@ $parsed = parseYandexSMS($string, $wrongClauses);
 
 $result = '';
 
-if (isset($wrongClauses))
+if ($wrongClauses)
 {
     $result .= "Некоторые строки не были распознаны или распознаны не верно!\n"
         . implode("\n", $wrongClauses) . "\n--------------------\n\n";
