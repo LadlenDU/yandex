@@ -2,13 +2,13 @@
 
 /**
  * @param string $string Строка SMS подтверждения (кодировка ).
- * @param bool $guess Нужно ли пытаться распознать часть сообщения
  * если она не подходит ни под один из предопределенных форматов.
+ * @param array $wrongClauses Нераспознанные строки.
  * @return array
  */
-function parseYandexSMS($string, $guess = true, $encoding = 'UTF-8')
+function parseYandexSMS($string, &$wrongClauses = [])
 {
-    $result = ['password' => null, 'charged' => null, 'account' => null];
+    $result = ['password' => false, 'charged' => false, 'account' => false];
 
     $string = trim($string);
 
@@ -23,17 +23,34 @@ function parseYandexSMS($string, $guess = true, $encoding = 'UTF-8')
     foreach ($parts as $clause)
     {
         $clause = trim($clause);
+
+        $parsed = false;
+
         if ($res = preg_match($patterns['password'], $clause, $matches))
         {
-            $result['password'] = ;
+            $result['password'] = $matches[1];
+            $parsed = true;
         }
-        else
+        elseif ($res = preg_match($patterns['charged'], $clause, $matches))
         {
+            $result['charged'] = ['charged' => $matches[1]];
+            if (isset($matches[2]))
+            {
+                $result['charged']['currency'] = $matches[2];
+            }
+            $parsed = true;
+        }
+        elseif ($res = preg_match($patterns['account'], $clause, $matches))
+        {
+            $result['password'] = $matches[1];
+            $parsed = true;
+        }
 
+        if (!$parsed)
+        {
+            $wrongClauses[] = $clause;
         }
     }
 
     return $result;
 }
-?>
-<input type="">

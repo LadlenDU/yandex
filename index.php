@@ -5,28 +5,70 @@ ini_set('display_errors', 1);
 
 require 'function.php';
 
-$s = 'Пароль: 7054
+$string = isset($_POST['string']) ?: 'Пароль: 7054
 Спишется 458,3р.
 Перевод на счет 410014456520804';
 
+$parsed = parseYandexSMS($string, $wrongClauses);
 
-#$ret = parseYandexSMS($s);
+$result = '';
 
-#print_r($ret);
+if (isset($wrongClauses))
+{
+    $result .= "Некоторые строки не были распознаны! Нераспознанные строки:\n"
+        . implode("\n", $wrongClauses) . "\n\n";
+}
 
+$result .= "Распознанные элементы SMS:\n" . print_r($parsed, true);
 
-#$text = "Строка 1\r\r\n\nСтрока 2\rСтрока 3\nСтрока 4\nСтрока 5";
-#$t = preg_split('/[\r\n]+/', $text);
-#$t = preg_split('/(\r\n)+/', $text);
+if (isset($_POST['string']))
+{
+    die($result);
+}
 
-$text = "str1UKUUUstr2KKstr3Ustr4";
-$s = 'ff charged 458,3rub.';
-$s = 'james and jack';
-#$t = preg_match('/^(?=.*\bcharged\b.*)(\d+[.,]?\d{0,2})$/iuU', $s, $matches);
-#$t = preg_match('/^(?=.*\bcharged\b.*)(\d+[.,]?\d{0,2})$/', $s, $matches);
-$t = preg_match('/^(?=.*\bjack\b)(?=.*\b(james)\b).*$/', $s, $matches);
+?>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Распознавание SMS</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <style type="text/css">
+        html, body {
+            width: 100%;
+        }
+        .container {
+            margin: 30px auto;
+            width: 610px;
+        }
+    </style>
+</head>
+<body>
 
+<div class="container">
+    <button id="count" style="width: 100px">Распознать</button><br>
+    <textarea name="string" style="width:500px" rows="7"><?php echo htmlspecialchars($string, ENT_QUOTES, 'utf-8') ?></textarea><br>
+    <pre id="result"><?php echo htmlspecialchars($result, ENT_QUOTES, 'utf-8') ?></pre>
+</div>
 
-print_r($matches);
+<script>
+    $(function () {
+        function calc() {
+            var string = $('[name="string"]').val();
+            $.post('index.php', {string: string}, function (text) {
+                $("#result").text(text);
+            }, 'text');
+        }
 
-#'(?(?=\bcharged\b)(\d+)|иначе)'
+        $("[name='string']").keyup(function () {
+            calc();
+        });
+        $("#count").click(function () {
+            calc();
+        });
+        calc();
+    });
+</script>
+
+</body>
+</html>
