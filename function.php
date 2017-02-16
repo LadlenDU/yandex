@@ -16,7 +16,11 @@ function parseYandexSMS($string, $guess = true, $encoding = 'UTF-8')
 
     // TODO: проверить при других кодировках строки
     $patterns['password'] = '/^Пароль[^\d\,\.]*\s+(\d+)$/iu';
-    $patterns['charged'] = '/^Спишется[^\d\,\.]*\s+(\d+[.,]?\d{0,2})([^\d\.\,]+[^\d]*)?$/iu';
+    #$patterns['charged'] = '/^Спишется[^\d\,\.]*\s+(\d+[.,]?\d{0,2})([^\d\.\,]+[^\d]*)?$/iu';
+    #$patterns['charged'] = '/^(?=.*\bСпишется\b)(?=.*?(\d+[\.\,]?\d{0,2})\s*(\D+\b)).*$/ui';
+    #$patterns['charged'] = '/^(?=.*\bСпишется\b)(?=.*?(\d+[\.\,]?\d{0,2})\s*([\w$]+)*).*$/ui';
+    $patterns['charged'] = '/(?=.*\bСпишется\b)(?=.*?(\d+[\.\,]?\d{0,2})\s*([\w$]+)*)/ui';
+
     $patterns['account'] = '/^.*\bсч[её]т\b.*\W+(\d+)$/iu';
 
     $parts = preg_split('/' . $clauseDelimiter . '/', $string);
@@ -27,3 +31,5 @@ function parseYandexSMS($string, $guess = true, $encoding = 'UTF-8')
 
     return $result;
 }
+?>
+<input type="">

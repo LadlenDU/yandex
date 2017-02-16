@@ -20,7 +20,13 @@ $s = 'Пароль: 7054
 #$t = preg_split('/(\r\n)+/', $text);
 
 $text = "str1UKUUUstr2KKstr3Ustr4";
-$t = preg_split('/[KU]+/', $text);
+$s = 'ff charged 458,3rub.';
+$s = 'james and jack';
+#$t = preg_match('/^(?=.*\bcharged\b.*)(\d+[.,]?\d{0,2})$/iuU', $s, $matches);
+#$t = preg_match('/^(?=.*\bcharged\b.*)(\d+[.,]?\d{0,2})$/', $s, $matches);
+$t = preg_match('/^(?=.*\bjack\b)(?=.*\b(james)\b).*$/', $s, $matches);
 
-print_r($t);
 
+print_r($matches);
+
+#'(?(?=\bcharged\b)(\d+)|иначе)'
