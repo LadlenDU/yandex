@@ -28,21 +28,42 @@ function parseYandexSMS($string, &$wrongClauses = [])
 
         if ($res = preg_match($patterns['password'], $clause, $matches))
         {
-            $result['password'] = $matches[1];
+            if (!$result['password'])
+            {
+                $result['password'] = $matches[1];
+            }
+            else
+            {
+                $wrongClauses[] = "Повторно распознан пароль в утверждении: '$clause'";
+            }
             $parsed = true;
         }
         elseif ($res = preg_match($patterns['charged'], $clause, $matches))
         {
-            $result['charged'] = ['charged' => $matches[1]];
-            if (isset($matches[2]))
+            if (!$result['charged'])
             {
-                $result['charged']['currency'] = $matches[2];
+                $result['charged'] = ['charged' => $matches[1]];
+                if (isset($matches[2]))
+                {
+                    $result['charged']['currency'] = $matches[2];
+                }
+            }
+            else
+            {
+                $wrongClauses[] = "Повторно распознано поле 'спишется' в утверждении: '$clause'";
             }
             $parsed = true;
         }
         elseif ($res = preg_match($patterns['account'], $clause, $matches))
         {
-            $result['password'] = $matches[1];
+            if (!$result['account'])
+            {
+                $result['account'] = $matches[1];
+            }
+            else
+            {
+                $wrongClauses[] = "Повторно распознано поле 'счет' в утверждении: '$clause'";
+            }
             $parsed = true;
         }
 
