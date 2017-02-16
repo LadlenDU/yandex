@@ -5,7 +5,7 @@ ini_set('display_errors', 1);
 
 require 'function.php';
 
-$string = isset($_POST['string']) ?: 'Пароль: 7054
+$string = isset($_POST['string']) ? $_POST['string'] : 'Пароль: 7054
 Спишется 458,3р.
 Перевод на счет 410014456520804';
 
@@ -15,8 +15,8 @@ $result = '';
 
 if (isset($wrongClauses))
 {
-    $result .= "Некоторые строки не были распознаны! Нераспознанные строки:\n"
-        . implode("\n", $wrongClauses) . "\n\n";
+    $result .= "Некоторые строки не были распознаны или распознаны не верно!\n"
+        . implode("\n", $wrongClauses) . "\n--------------------\n\n";
 }
 
 $result .= "Распознанные элементы SMS:\n" . print_r($parsed, true);

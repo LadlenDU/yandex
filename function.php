@@ -22,7 +22,10 @@ function parseYandexSMS($string, &$wrongClauses = [])
     $parts = preg_split('/' . $clauseDelimiter . '/', $string);
     foreach ($parts as $clause)
     {
-        $clause = trim($clause);
+        if (!$clause = trim($clause))
+        {
+            continue;
+        }
 
         $parsed = false;
 
@@ -69,7 +72,7 @@ function parseYandexSMS($string, &$wrongClauses = [])
 
         if (!$parsed)
         {
-            $wrongClauses[] = $clause;
+            $wrongClauses[] = "Не распознано утверждение: '$clause'";
         }
     }
 
