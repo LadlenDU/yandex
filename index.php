@@ -37,6 +37,7 @@ if (isset($_POST['string']))
         html, body {
             width: 100%;
         }
+
         .container {
             margin: 30px auto;
             width: 610px;
@@ -46,8 +47,13 @@ if (isset($_POST['string']))
 <body>
 
 <div class="container">
-    <button id="count" style="width: 100px">Распознать</button><br>
-    <textarea name="string" style="width:500px" rows="7"><?php echo htmlspecialchars($string, ENT_QUOTES, 'utf-8') ?></textarea><br>
+    <button id="count" style="width: 100px">Распознать</button>
+    <br>
+    <textarea name="string" style="width:500px" rows="7"><?php echo htmlspecialchars(
+            $string,
+            ENT_QUOTES,
+            'utf-8'
+        ) ?></textarea><br>
     <pre id="result"><?php echo htmlspecialchars($result, ENT_QUOTES, 'utf-8') ?></pre>
 </div>
 

@@ -1,10 +1,9 @@
 <?php
 
 /**
- * @param string $string Строка SMS подтверждения (кодировка ).
- * если она не подходит ни под один из предопределенных форматов.
+ * @param string $string Строка SMS подтверждения.
  * @param array $wrongClauses Нераспознанные строки.
- * @return array
+ * @return array Распознанные элементы.
  */
 function parseYandexSMS($string, &$wrongClauses = [])
 {
@@ -14,7 +13,6 @@ function parseYandexSMS($string, &$wrongClauses = [])
 
     $clauseDelimiter = '[\r\n]+';   // Разделитель строк.
 
-    // TODO: проверить при других кодировках строки
     $patterns['password'] = '/(?=.*\bПароль\b)(?=.*?(\b\d+\b))/ui';
     $patterns['charged'] = '/(?=.*\bСпишется\b)(?=.*?(\b\d+[\.\,]?\d{0,2})\s*([\w$]+)*)/ui';
     $patterns['account'] = '/(?=.*\bСч[её]т\b)(?=.*?(\b\d+\b))/ui';
